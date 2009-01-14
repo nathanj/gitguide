@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>An Illustrated Guide to Git on Windows</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>An Illustrated Guide to Git on Windows</h1>
+
+		<h2 id="about">About</h2>
+
+		<p>This document is designed to show that using git on Windows
+		is not a difficult process. In this guide, I will create a
+		repository, make several commits, create a branch, merge a
+		branch, search the commit history, push to a remote server, and
+		pull from a remote server. The majority of this will be done
+		using GUI tools.</p>
+
+		<p>Although this guide is targeted for use on Windows, the git gui tool
+		works the same on all platforms. Because of this, git users on other
+		platforms may find useful information here as well.</p>
+
+		<p>If you have any comments about this guide, feel free to <a
+			href="mailto:nathanj@insightbb.com">contact me</a>.</p>
+
+		<h2 id="putty">Downloading PuTTY</h2>
+
+		<p>Although you can use the SSH program that comes with git, I
+		prefer to use the PuTTY Agent to keep track of my SSH keys.  If
+		you don't already have them, download <span
+			class="tt">putty.exe</span>, <span
+			class="tt">plink.exe</span>, <span
+			class="tt">pageant.exe</span>, and
+		<span class="tt">puttygen.exe</span> from the <a
+			href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">PuTTY
+			web site</a>.</p>
+
+		<p>Later in this guide, we will use these programs for securely
+		pushing our changes to a remote server.</p>
+
+		<h2 id="installing">Installing Git</h2>
+
+		<p>First, download <a
+			href="http://code.google.com/p/msysgit/downloads/list">msysgit</a>.
+		This download is a single executable which installs the entire
+		git system. While going through the installer, you will want to
+		check the options to add Windows Explorer integration when you
+		right click on a folder.</p>
+
+		<p><img src="images/install.png" /></p>
+
+		<p>Because we will be using PuTTY as our SSH client, choose
+		<em>Use PLink</em> and fill in the path to the downloaded
+		<span class="tt">plink.exe</span> executable.</p>
+
+		<p><img src="images/26.png" /></p>
+
+		<p>Continue clicking <em>Next</em> until the installation is
+		complete.</p>
+
+		<h2 id="creating">Creating a Repository</h2>
+
+		<p><img src="images/01.png" /></p>
+
+		<p>To create a repository, first create the folder you want the
+		project to live under. Next, right click on the folder and
+		choose <em>Git GUI Here</em>. Because there is no git repository
+		in this folder yet, you will be presented with the git gui
+		startup dialog.</p>
+
+		<p><img src="images/02.png" /></p>
+
+		<p>Choosing <em>Create New Repository</em> brings us to the next
+		dialog.</p>
+
+		<p><img src="images/03.png" /></p>
+
+		<p>Fill in the path to your new directory and click Create. You
+		will then be presented with the main interface of git gui, which
+		is what will be shown from now on when you right click on your
+		folder and click <em>Git GUI Here</em>.</p>
+
+		<p><img src="images/04.png" /></p>
+
+		<p>Now that the repository has been set up, you will need to tell
+		git who you are so that commit messages will have the correct
+		author. To do this, choose <i>Edit &rarr; Options</i>.</p>
+
+		<p><img src="images/25.png" /></p>
+
+		<p>In the options dialog, there are two versions of each
+		preference. On the left side of the dialog are options that you
+		want for this repository only, while the right side contains the
+		global options which apply to all repositories. The defaults for
+		these options are sensible so just fill in the user name and
+		email for now. If you have a favorite font, you may want to set
+		it now as well.</p>
+
+		<h2 id="committing">Committing</h2>
+
+		<p>Now that the repository has been created, it is time to
+		create something to commit. For this example, I created a file
+		called <span class="tt">main.c</span> with the following content:
+
+		<pre>
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+	printf("Hello world!\n");
+	return 0;
+}
+</pre>
+
+		<p>Clicking the <em>Rescan</em> button in the git gui will cause
+		it to search out new, modified, and deleted files in the
+		directory. In the next screenshot, git gui has found
+		our new file (amazing, I know).</p>
+
+		<p><img src="images/09.png" /></p>
+
+		<p>To add the file for committing, click the icon to the left of
+		the filename. The file will be moved from the <em>Unstaged
+			Changes</em> pane to the <em>Staged Changes</em> pane. Now
+		we can add a commit message and commit the change with the
+		<em>Commit</em> button.</p>
+
+		<p><img src="images/10.png" /></p>
+
+		<p>Saying hello to the world is all well and good, but I would
+		like my program to be more personal. Let's have it say hello to
+		the user. Here's my code for that:</p>
+
+		<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char **argv)
+{
+	char name[255];
+
+	printf("Enter your name: ");
+	fgets(name, 255, stdin);
+	printf("length = %d\n", strlen(name)); /* debug line */
+	name[strlen(name)-1] = '\0'; /* remove the newline at the end */
+
+	printf("Hello %s!\n", name);
+	return 0;
+}
+</pre>
+
+		<p>I had some trouble figuring out why a newline was printed
+		after the user's name, so I added a debugging line to help me
+		track it down. I would like to commit this patch without the
+		debug line, but I want to keep the line in my working copy to
+		continue debugging. With git gui, this is no problem. First,
+		click <em>Rescan</em> to scan for the modified file. Next,
+		click the icon to the left of the filename to stage all
+		modifications for commit. Then, right click on the debug
+		line and chose <em>Unstage Line From Commit</em>.</p>
+
+		<p><img src="images/11.png" /></p>
+
+		<p>Now, the debug line has been unstaged, while the rest of the
+		changes have been staged. From here, it is just a matter of
+		filling in the commit message and clicking <em>Commit</em>.</p>
+
+		<p><img src="images/12.png" /></p>
+
+		<h2 id="branching">Branching</h2>
+
+		<p>Now let's say that we want to start adding new features for
+		our next big version of the program. But, we also want to keep a
+		stable, maintenance version of the program to fix bugs on. To do
+		this, we will create a branch for our new development.  To
+		create a new branch in git gui, choose <i>Branch &rarr;
+			Create</i>. The big feature that I would like to add is to
+		ask the user for their last name, so I am calling this branch
+		<span class="tt">lastname</span>. The default options in the
+		Create Branch dialog are all fine, so just enter the name and
+		click <em>Create</em>.</p>
+
+		<p><img src="images/14.png" /></p>
+
+		<p>Now that I am on the <span class="tt">lastname</span> branch,
+		I can make my new modifications:</p>
+
+		<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char **argv)
+{
+	char first[255], last[255];
+
+	printf("Enter your first name: ");
+	fgets(first, 255, stdin);
+	first[strlen(first)-1] = '\0'; /* remove the newline at the end */
+
+	printf("Now enter your last name: ");
+	gets(last); /* buffer overflow? what's that? */
+
+	printf("Hello %s %s!\n", first, last);
+ 	return 0;
+}
+</pre>
+
+		<p>And then I can commit the change. Note here that I am
+		committing using a different name. This is to show off something
+		later. Normally you would always use the same name when
+		committing.</p>
+
+		<p><img src="images/15.png" /></p>
+
+		<p>Meanwhile, a user informs us that not displaying a comma when
+		directly addressing someone is a serious bug. In order to make
+		this bug fix on our stable branch, we must first switch back to
+		it. This is done using <i>Branch &rarr; Checkout</i>.
+
+		<p><img src="images/16.png" /></p>
+
+		<p>Now we can fix our major bug.</p>
+
+		<p><img src="images/17.png" /></p>
+
+		<p>If we choose <i>Repository &rarr; Visualize All Branch
+			History</i>, we can see how our history is shaping up.</p>
+
+		<p><img src="images/18.png" /></p>
+
+		<h2 id="merging">Merging</h2>
+
+		<p>After days of work, we decide that our <span
+			class="tt">lastname</span>
+		branch is stable enough to be merged into the <span
+			class="tt">master</span>
+		branch. To perform the merge, use <i>Merge &rarr; Local
+			Merge</i>.</p>
+
+		<p><img src="images/19.png" /></p>
+
+		<p>Because the two different commits made two different
+		modifications to the same line, a conflict occurs.</p>
+
+		<p><img src="images/20.png" /></p>
+		<p><img src="images/21.png" /></p>
+
+		<p>This conflict can be resolved using your favorite merge tool.
+		After resolving the conflict, clicking the <em>Commit</em>
+		button will commit the merge.</p>
+
+		<p><img src="images/22.png" /></p>
+
+		<h2 id="history">Viewing History</h2>
+
+		<p>The <span class="tt">main.c</span> file is starting to get a
+		bit big, so I decided to move the user prompting portion of the
+		code into its own function.  While I was at it, I decided to
+		move the function into a separate file. The
+		repository now contains the files <span
+			class="tt">main.c</span>, <span class="tt">askname.c</span>,
+		and <span class="tt">askname.h</span>.</p>
+
+		<pre>
+/* main.c */
+#include &lt;stdio.h&gt;
+
+#include "askname.h"
+
+int main(int argc, char **argv)
+{
+	char first[255], last[255];
+
+	askname(first, last);
+
+	printf("Hello, %s %s!\n", first, last);
+ 	return 0;
+}
+</pre>
+
+		<pre>
+/* askname.c */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void askname(char *first, char *last)
+{
+	printf("Enter your first name: ");
+	fgets(first, 255, stdin);
+	first[strlen(first)-1] = '\0'; /* remove the newline at the end */
+
+	printf("Now enter your last name: ");
+	gets(last); /* buffer overflow? what's that? */
+}
+</pre>
+
+		<pre>
+/* askname.h */
+void askname(char *first, char *last);
+</pre>
+
+		<p><img src="images/23.png" /></p>
+
+		<p>The history of the repository can be viewed and searched by
+		choosing <i>Repository &rarr; Visualize All Branch History</i>.
+		In the next screenshot, I am trying to find which commit added
+		the <span class="tt">last</span> variable by searching for all
+		commits which added or removed the word <em>last</em>. Commits
+		which match the search are bolded, making it quick and easy to
+		spot the desired commit.</p>
+
+		<p><img src="images/27.png" /></p>
+
+		<p>A few days later, someone looks through our code and sees
+		that the <span class="tt">gets</span> function could cause a
+		buffer overflow.  Being the type to point fingers, this person
+		decides to run a git blame to see who last modified this line of
+		code. The problem is that Bob is the one who committed the line,
+		but I was the one who last touched it when I moved the line into
+		a different file.  Obviously, I am not to blame (of course). Is
+		git smart enough to figure this out? Yes, it is.</p>
+		
+		<p>To run a blame, select <i>Repository &rarr; Browse master's
+			Files</i>. From the tree that pops up, double click on the
+		file with the line in question which in this case is <span
+			class="tt">askname.c</span>.
+		Hovering the mouse over the line in question shows a tooltip
+		message that tells us all we need to know.</p>
+
+		<p><img src="images/24.png" /></p>
+
+		<p>Here we can see that the line was last modified by Bob in
+		commit <span class="tt">f6c0</span>, and then I moved it to its
+		new location in commit <span class="tt">b312</span>.
+
+		<h2 id="pushing">Pushing to a Remote Server</h2>
+
+		<p>Before pushing to a remote server, you must first create a
+		SSH public and private key pair. By using SSH, you will be able
+		to securely authenticate to the server that you are who you say
+		you are. Creating the key pair is a simple process. Begin by
+		running the <span class="tt">puttygen.exe</span> program
+		downloaded earlier.  Next, click the <em>Generate</em> button to
+		generate the keys.  After processing for a few seconds, click
+		the <em>Save private key</em> button to save your new private
+		key. Copy the public key to the clipboard in preparation for the
+		next step. I would recommend not clicking the <em>Save public
+			key</em> button because the saved file is in a non-standard
+		format; trying to use it with other software might be
+		problematic.</p>
+
+		<p><img src="images/32.png" /></p>
+
+		<p>Now that the keys are generated, the remote servers need to
+		know about it. If you would like to use <a
+			href="http://github.com/">github</a> to host your code, just
+		go to your account page and paste in the public key.</p>
+
+		<p><img src="images/33.png" /></p>
+
+		<p>Now github has our public key, but we do not yet have
+		github's. To remedy this, launch <span
+			class="tt">putty.exe</span>, connect to <span
+			class="tt">github.com</span>, and click <em>Yes</em> to
+		accept github's public key. You can safely close the login
+		window that opens up after accepting the key.
+
+		<p><img src="images/34.png" /></p>
+
+		<p><img src="images/35.png" /></p>
+
+		<p>We need our private key to be loaded up to use with our
+		public key, so launch <span class="tt">pageant.exe</span>. This
+		program will create an icon in your system tray. Double clicking
+		on the icon will open up a window into which the private key can
+		be added. Once the private key is added, the agent will sit in
+		the background and provide authentication when needed.</p>
+
+		<p><img src="images/36.png" /></p>
+
+		<p>Now that our client and server can authenticate each other,
+		it is time to push! <i>Remote &rarr; Push</i> will open up
+		the push dialog. Typing in the commit address for the project
+		and clicking <em>Push</em> will send the changes on their way.</p>
+
+		<p><img src="images/37.png" /></p>
+
+		<p><img src="images/38.png" /></p>
+
+		<p>Of course, typing in the remote url would become quite
+		annoying if we had to do it with every push. Instead, git allows
+		us to alias the long urls using remotes. Git gui currently does
+		not have a way to add a remote, so the command line must be
+		used. Right click on the repository folder and choose <i>Git Bash Here</i>.
+		In the prompt, enter the following command:</p>
+
+		<pre>
+git remote add github git@github.com:nathanj/example.git
+</pre>
+
+		<p>Note: After adding a remote, close and reopen git gui for it to recognize
+		the new remote.</p>
+
+		<p>Now the remote <span class="tt">github</span> is aliased to
+		the url <span
+			class="tt">git@github.com:nathanj/example.git</span>. When
+		viewing the push dialog in git gui, a convenient drop down list
+		of remotes is shown.</p>
+
+		<p><img src="images/39.png" /></p>
+
+		<h2 id="pulling">Pulling from a Remote Server</h2>
+
+		<p>Because our code is so useful, dozens of people have
+		downloaded and now use our program. One person in particular,
+		Fred, has decided to fork our project and add his own commits.
+		Now that he's added his code, he would like us to pull those
+		commits from him into our repository. To do this, first create
+		another remote.</p>
+
+		<pre>
+git remote add fred ssh://fred@192.168.2.67/home/fred/example
+</pre>
+
+		<p>Now we can fetch Fred's changes using <i>Remote &rarr; Fetch
+			from &rarr; fred</i>.
+
+		<p><img src="images/40.png" /></p>
+
+		<p>After the fetch, Fred's commits have now been added to our
+		local repository under the <span
+			class="tt">remotes/fred/master</span> branch. We can use
+		gitk to visualize the changes that Fred has made.</p>
+
+		<p><img src="images/41.png" /></p>
+
+		<p>If we like all of Fred's changes, we could do a normal merge
+		as before. In this case though, I like one of his commits but
+		not the other. To only merge one of his commits, right click on
+		the commit and choose <i>Cherry-pick this commit</i>. The
+		commit will then be merged into the current branch.</p>
+
+		<p><img src="images/42.png" /></p>
+		<p><img src="images/43.png" /></p>
+
+		<p>We can now push a final time to send Fred's patch to our
+		github tree for everyone to see and use.</p>
+
+		<p><img src="images/45.png" /></p>
+
+		<h2 id="conclusion">Conclusion</h2>
+
+		<p>In this guide, I have shown how to do many common tasks in
+		git using GUI tools. I hope that this guide has shown that it is
+		not only possible but easy to use git on Windows without having
+		to use the Windows shell for most operations.</p>
+
+		<p>If you have any comments about this guide, feel free to <a
+			href="mailto:nathanj@insightbb.com">contact me</a>.</p>
+
+	</body>
+</html>
+
