@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>An Illustrated Guide to Git on Windows</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>An Illustrated Guide to Git on Windows</h1>
+
+		<h2 id="committing">Committing</h2>
+
+		<p>Now that the repository has been created, it is time to
+		create something to commit. For this example, I created a file
+		called <span class="tt">main.c</span> with the following content:
+
+		<pre>
+#include &lt;stdio.h&gt;
+
+int main(int argc, char **argv)
+{
+	printf("Hello world!\n");
+	return 0;
+}
+</pre>
+
+		<p>Clicking the <em>Rescan</em> button in the git gui will cause
+		it to search out new, modified, and deleted files in the
+		directory. In the next screenshot, git gui has found
+		our new file (amazing, I know).</p>
+
+		<p><img src="images/09.png" /></p>
+
+		<p>To add the file for committing, click the icon to the left of
+		the filename. The file will be moved from the <em>Unstaged
+			Changes</em> pane to the <em>Staged Changes</em> pane. Now
+		we can add a commit message and commit the change with the
+		<em>Commit</em> button.</p>
+
+		<p><img src="images/10.png" /></p>
+
+		<p>Saying hello to the world is all well and good, but I would
+		like my program to be more personal. Let's have it say hello to
+		the user. Here's my code for that:</p>
+
+		<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char **argv)
+{
+	char name[255];
+
+	printf("Enter your name: ");
+	fgets(name, 255, stdin);
+	printf("length = %d\n", strlen(name)); /* debug line */
+	name[strlen(name)-1] = '\0'; /* remove the newline at the end */
+
+	printf("Hello %s!\n", name);
+	return 0;
+}
+</pre>
+
+		<p>I had some trouble figuring out why a newline was printed
+		after the user's name, so I added a debugging line to help me
+		track it down. I would like to commit this patch without the
+		debug line, but I want to keep the line in my working copy to
+		continue debugging. With git gui, this is no problem. First,
+		click <em>Rescan</em> to scan for the modified file. Next,
+		click the icon to the left of the filename to stage all
+		modifications for commit. Then, right click on the debug
+		line and chose <em>Unstage Line From Commit</em>.</p>
+
+		<p><img src="images/11.png" /></p>
+
+		<p>Now, the debug line has been unstaged, while the rest of the
+		changes have been staged. From here, it is just a matter of
+		filling in the commit message and clicking <em>Commit</em>.</p>
+
+		<p><img src="images/12.png" /></p>
+
+<hr />
+<table class="nav">
+<tr>
+<td class="left">
+<a id="back" href="creating.html">&laquo; Creating a Repository</a>
+</td>
+<td class="up">
+<a id="up" href="index.html">Index</a>
+</td>
+<td class="next">
+<a id="next" href="branching.html">Branching &raquo;</a>
+</td>
+</tr>
+</table>
+	</body>
+</html>
+

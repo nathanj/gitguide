@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>An Illustrated Guide to Git on Windows</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>An Illustrated Guide to Git on Windows</h1>
+
+		<h2 id="pulling">Pulling from a Remote Server</h2>
+
+		<p>Because our code is so useful, dozens of people have
+		downloaded and now use our program. One person in particular,
+		Fred, has decided to fork our project and add his own commits.
+		Now that he's added his code, he would like us to pull those
+		commits from him into our repository. To do this, first create
+		another remote.</p>
+
+		<pre>
+git remote add fred ssh://fred@192.168.2.67/home/fred/example
+</pre>
+
+		<p>Now we can fetch Fred's changes using <i>Remote &rarr; Fetch
+			from &rarr; fred</i>.
+
+		<p><img src="images/40.png" /></p>
+
+		<p>After the fetch, Fred's commits have now been added to our
+		local repository under the <span
+			class="tt">remotes/fred/master</span> branch. We can use
+		gitk to visualize the changes that Fred has made.</p>
+
+		<p><img src="images/41.png" /></p>
+
+		<p>If we like all of Fred's changes, we could do a normal merge
+		as before. In this case though, I like one of his commits but
+		not the other. To only merge one of his commits, right click on
+		the commit and choose <i>Cherry-pick this commit</i>. The
+		commit will then be merged into the current branch.</p>
+
+		<p><img src="images/42.png" /></p>
+		<p><img src="images/43.png" /></p>
+
+		<p>We can now push a final time to send Fred's patch to our
+		github tree for everyone to see and use.</p>
+
+		<p><img src="images/45.png" /></p>
+
+<hr />
+<table class="nav">
+<tr>
+<td class="left">
+<a id="back" href="pushing.html">&laquo; Pushing to a Remote Server</a>
+</td>
+<td class="up">
+<a id="up" href="index.html">Index</a>
+</td>
+<td class="next">
+<a id="next" href="conclusion.html">Conclusion &raquo;</a>
+</td>
+</tr>
+</table>
+	</body>
+</html>
+

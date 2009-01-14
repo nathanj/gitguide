@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>An Illustrated Guide to Git on Windows</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>An Illustrated Guide to Git on Windows</h1>
+
+		<h2 id="branching">Branching</h2>
+
+		<p>Now let's say that we want to start adding new features for
+		our next big version of the program. But, we also want to keep a
+		stable, maintenance version of the program to fix bugs on. To do
+		this, we will create a branch for our new development.  To
+		create a new branch in git gui, choose <i>Branch &rarr;
+			Create</i>. The big feature that I would like to add is to
+		ask the user for their last name, so I am calling this branch
+		<span class="tt">lastname</span>. The default options in the
+		Create Branch dialog are all fine, so just enter the name and
+		click <em>Create</em>.</p>
+
+		<p><img src="images/14.png" /></p>
+
+		<p>Now that I am on the <span class="tt">lastname</span> branch,
+		I can make my new modifications:</p>
+
+		<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char **argv)
+{
+	char first[255], last[255];
+
+	printf("Enter your first name: ");
+	fgets(first, 255, stdin);
+	first[strlen(first)-1] = '\0'; /* remove the newline at the end */
+
+	printf("Now enter your last name: ");
+	gets(last); /* buffer overflow? what's that? */
+
+	printf("Hello %s %s!\n", first, last);
+ 	return 0;
+}
+</pre>
+
+		<p>And then I can commit the change. Note here that I am
+		committing using a different name. This is to show off something
+		later. Normally you would always use the same name when
+		committing.</p>
+
+		<p><img src="images/15.png" /></p>
+
+		<p>Meanwhile, a user informs us that not displaying a comma when
+		directly addressing someone is a serious bug. In order to make
+		this bug fix on our stable branch, we must first switch back to
+		it. This is done using <i>Branch &rarr; Checkout</i>.
+
+		<p><img src="images/16.png" /></p>
+
+		<p>Now we can fix our major bug.</p>
+
+		<p><img src="images/17.png" /></p>
+
+		<p>If we choose <i>Repository &rarr; Visualize All Branch
+			History</i>, we can see how our history is shaping up.</p>
+
+		<p><img src="images/18.png" /></p>
+
+<hr />
+<table class="nav">
+<tr>
+<td class="left">
+<a id="back" href="committing.html">&laquo; Committing</a>
+</td>
+<td class="up">
+<a id="up" href="index.html">Index</a>
+</td>
+<td class="next">
+<a id="next" href="merging.html">Merging &raquo;</a>
+</td>
+</tr>
+</table>
+	</body>
+</html>
+

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>An Illustrated Guide to Git on Windows</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>An Illustrated Guide to Git on Windows</h1>
+
+		<h2 id="pushing">Pushing to a Remote Server</h2>
+
+		<p>Before pushing to a remote server, you must first create a
+		SSH public and private key pair. By using SSH, you will be able
+		to securely authenticate to the server that you are who you say
+		you are. Creating the key pair is a simple process. Begin by
+		running the <span class="tt">puttygen.exe</span> program
+		downloaded earlier.  Next, click the <em>Generate</em> button to
+		generate the keys.  After processing for a few seconds, click
+		the <em>Save private key</em> button to save your new private
+		key. Copy the public key to the clipboard in preparation for the
+		next step. I would recommend not clicking the <em>Save public
+			key</em> button because the saved file is in a non-standard
+		format; trying to use it with other software might be
+		problematic.</p>
+
+		<p><img src="images/32.png" /></p>
+
+		<p>Now that the keys are generated, the remote servers need to
+		know about it. If you would like to use <a
+			href="http://github.com/">github</a> to host your code, just
+		go to your account page and paste in the public key.</p>
+
+		<p><img src="images/33.png" /></p>
+
+		<p>Now github has our public key, but we do not yet have
+		github's. To remedy this, launch <span
+			class="tt">putty.exe</span>, connect to <span
+			class="tt">github.com</span>, and click <em>Yes</em> to
+		accept github's public key. You can safely close the login
+		window that opens up after accepting the key.
+
+		<p><img src="images/34.png" /></p>
+
+		<p><img src="images/35.png" /></p>
+
+		<p>We need our private key to be loaded up to use with our
+		public key, so launch <span class="tt">pageant.exe</span>. This
+		program will create an icon in your system tray. Double clicking
+		on the icon will open up a window into which the private key can
+		be added. Once the private key is added, the agent will sit in
+		the background and provide authentication when needed.</p>
+
+		<p><img src="images/36.png" /></p>
+
+		<p>Now that our client and server can authenticate each other,
+		it is time to push! <i>Remote &rarr; Push</i> will open up
+		the push dialog. Typing in the commit address for the project
+		and clicking <em>Push</em> will send the changes on their way.</p>
+
+		<p><img src="images/37.png" /></p>
+
+		<p><img src="images/38.png" /></p>
+
+		<p>Of course, typing in the remote url would become quite
+		annoying if we had to do it with every push. Instead, git allows
+		us to alias the long urls using remotes. Git gui currently does
+		not have a way to add a remote, so the command line must be
+		used. Right click on the repository folder and choose <i>Git Bash Here</i>.
+		In the prompt, enter the following command:</p>
+
+		<pre>
+git remote add github git@github.com:nathanj/example.git
+</pre>
+
+		<p>Note: After adding a remote, close and reopen git gui for it to recognize
+		the new remote.</p>
+
+		<p>Now the remote <span class="tt">github</span> is aliased to
+		the url <span
+			class="tt">git@github.com:nathanj/example.git</span>. When
+		viewing the push dialog in git gui, a convenient drop down list
+		of remotes is shown.</p>
+
+		<p><img src="images/39.png" /></p>
+
+<hr />
+<table class="nav">
+<tr>
+<td class="left">
+<a id="back" href="history.html">&laquo; Viewing History</a>
+</td>
+<td class="up">
+<a id="up" href="index.html">Index</a>
+</td>
+<td class="next">
+<a id="next" href="pulling.html">Pulling from a Remote Server &raquo;</a>
+</td>
+</tr>
+</table>
+	</body>
+</html>
+
